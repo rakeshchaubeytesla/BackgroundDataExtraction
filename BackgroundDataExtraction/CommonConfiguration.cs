@@ -11,5 +11,6 @@ namespace BackgroundDataExtraction
         public static readonly string ZipFileUrl = "https://archives.nseindia.com/archives/equities/bhavcopy/pr/";
         public static readonly string ZipFileStorageLocation = @"D:\DailyBhavCopy\ZipPath\";
         public static readonly string UnZipFileStorageLocation = @"D:\DailyBhavCopy\UnZipPath\";
+        public static readonly string UnZipBhavCSV = "https://archives.nseindia.com/content/historical/EQUITIES/";
     }
 }

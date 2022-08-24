@@ -9,17 +9,36 @@ namespace BackgroundDataExtraction
 {
     public static class IdentifyTableName
     {
-        public static string TableName(string fileName)
+        //public static string TableName(string fileName)
+        //{
+        //    string tableName = "";
+        //    switch (fileName)
+        //    {
+        //        case "Bc":
+        //            tableName= TableNameEnum.BcCorporateActionSecurities.ToString();
+        //            break;
+
+        //        case "An":
+        //            tableName = TableNameEnum.AnAnnouncement.ToString();
+        //            break;
+
+        //        default:
+        //            break;
+        //    }
+        //    return tableName;
+        //}
+
+        public static TableNameEnum TableName(string fileName)
         {
-            string tableName = "";
+            TableNameEnum tableName = TableNameEnum.UnDefined;
             switch (fileName)
             {
                 case "Bc":
-                    tableName= TableNameEnum.BcCorporateActionSecurities.ToString();
+                    tableName = TableNameEnum.BcCorporateActionSecurities;
                     break;
 
                 case "An":
-                    tableName = TableNameEnum.AnAnnouncement.ToString();
+                    tableName = TableNameEnum.AnAnnouncement;
                     break;
 
                 default:

@@ -9,6 +9,7 @@ namespace BackgroundDataExtraction.Enum
     public enum TableNameEnum
     {
         AnAnnouncement,
-        BcCorporateActionSecurities
+        BcCorporateActionSecurities,
+        UnDefined
     }
 }

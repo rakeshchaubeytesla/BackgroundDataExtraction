@@ -19,6 +19,7 @@ namespace BackgroundDataExtraction.Models
 
         public virtual DbSet<AnAnnouncement> AnAnnouncements { get; set; }
         public virtual DbSet<BcCorporateActionSecurity> BcCorporateActionSecurities { get; set; }
+        public virtual DbSet<DailyBhav> DailyBhavs { get; set; }
         public virtual DbSet<User> Users { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -56,33 +57,40 @@ namespace BackgroundDataExtraction.Models
                 entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.BcEndDt)
-                    .HasColumnType("datetime")
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
                     .HasColumnName("BC_END_DT");
 
                 entity.Property(e => e.BcStrtDt)
-                    .HasColumnType("datetime")
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
                     .HasColumnName("BC_STRT_DT");
 
                 entity.Property(e => e.CorporateActionSecurityDate).HasColumnType("datetime");
 
                 entity.Property(e => e.ExDt)
-                    .HasColumnType("datetime")
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
                     .HasColumnName("EX_DT");
 
                 entity.Property(e => e.NdEndDt)
-                    .HasColumnType("datetime")
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
                     .HasColumnName("ND_END_DT");
 
                 entity.Property(e => e.NdStrtDt)
-                    .HasColumnType("datetime")
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
                     .HasColumnName("ND_STRT_DT");
 
                 entity.Property(e => e.Purpose)
-                    .HasColumnType("datetime")
+                    .HasMaxLength(500)
+                    .IsUnicode(false)
                     .HasColumnName("PURPOSE");
 
                 entity.Property(e => e.RecordDt)
-                    .HasColumnType("datetime")
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
                     .HasColumnName("RECORD_DT");
 
                 entity.Property(e => e.Security)
@@ -99,6 +107,67 @@ namespace BackgroundDataExtraction.Models
                     .HasMaxLength(50)
                     .IsUnicode(false)
                     .HasColumnName("SYMBOL");
+            });
+
+            modelBuilder.Entity<DailyBhav>(entity =>
+            {
+                entity.ToTable("DailyBhav");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Close)
+                    .HasColumnType("numeric(8, 2)")
+                    .HasColumnName("CLOSE");
+
+                entity.Property(e => e.GeneratedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.High)
+                    .HasColumnType("numeric(8, 2)")
+                    .HasColumnName("HIGH");
+
+                entity.Property(e => e.Isin)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("ISIN");
+
+                entity.Property(e => e.Last)
+                    .HasColumnType("numeric(8, 2)")
+                    .HasColumnName("LAST");
+
+                entity.Property(e => e.Low)
+                    .HasColumnType("numeric(8, 2)")
+                    .HasColumnName("LOW");
+
+                entity.Property(e => e.Open)
+                    .HasColumnType("numeric(8, 2)")
+                    .HasColumnName("OPEN");
+
+                entity.Property(e => e.Prevclose)
+                    .HasColumnType("numeric(8, 2)")
+                    .HasColumnName("PREVCLOSE");
+
+                entity.Property(e => e.Series)
+                    .HasMaxLength(4)
+                    .IsUnicode(false)
+                    .HasColumnName("SERIES");
+
+                entity.Property(e => e.Symbol)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("SYMBOL");
+
+                entity.Property(e => e.Timestamp)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("TIMESTAMP");
+
+                entity.Property(e => e.Totaltrades).HasColumnName("TOTALTRADES");
+
+                entity.Property(e => e.Tottrdqty).HasColumnName("TOTTRDQTY");
+
+                entity.Property(e => e.Tottrdval)
+                    .HasColumnType("numeric(14, 2)")
+                    .HasColumnName("TOTTRDVAL");
             });
 
             modelBuilder.Entity<User>(entity =>

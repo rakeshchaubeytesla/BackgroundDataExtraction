@@ -30,7 +30,7 @@ namespace BackgroundDataExtraction
         {
             DeleteExistingFiles(CommonConfiguration.UnZipFileStorageLocation);
 
-            ZipFile.ExtractToDirectory(CommonConfiguration.ZipFileStorageLocation+ zipFileName, 
+            ZipFile.ExtractToDirectory(CommonConfiguration.ZipFileStorageLocation + zipFileName,
                                        CommonConfiguration.UnZipFileStorageLocation);
         }
 
@@ -42,6 +42,31 @@ namespace BackgroundDataExtraction
                 file.Delete();
             }
         }
+
+        public static void DownloadBhavZipFile(string destinationPath, string url, string zipFileName)
+        {
+            DeleteExistingFiles(destinationPath);
+            using (WebClient wc = new WebClient())
+            {
+                wc.DownloadFile(url, destinationPath + zipFileName);
+            }
+        }
+        public static void ExtractBhavZipFile(string sourcePath, string destinationPath, string zipFileName)
+        {
+            DeleteExistingFiles(destinationPath);
+
+            ZipFile.ExtractToDirectory(sourcePath + zipFileName,
+                                       destinationPath);
+        }
+
+        public static DateTime[] GetDatesBetween(DateTime startDate, DateTime endDate)
+        {
+            List<DateTime> allDates = new List<DateTime>();
+            for (DateTime date = startDate; date <= endDate; date = date.AddDays(1))
+                allDates.Add(date);
+            return allDates.ToArray();
+        }
+
 
     }
 }
