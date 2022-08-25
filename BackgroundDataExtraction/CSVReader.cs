@@ -13,26 +13,30 @@ namespace BackgroundDataExtraction
     {
         public static DataTable ConvertCSVtoDataTable(string strFilePath)
         {
-            StreamReader sr = new StreamReader(strFilePath);
-            string[] headers = sr.ReadLine().Split(',');
             DataTable dt = new DataTable();
-            foreach (string header in headers)
+            using (StreamReader sr = new StreamReader(strFilePath))
             {
-                dt.Columns.Add(header);
-            }
-            while (!sr.EndOfStream)
-            {
-                string[] rows = Regex.Split(sr.ReadLine(), ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
-                if(rows.Length == headers.Length)
+                string[] headers = sr.ReadLine().Split(',');
+
+                foreach (string header in headers)
                 {
-                    DataRow dr = dt.NewRow();
-                    for (int i = 0; i < headers.Length; i++)
+                    dt.Columns.Add(header);
+                }
+                while (!sr.EndOfStream)
+                {
+                    string[] rows = Regex.Split(sr.ReadLine(), ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+                    if (rows.Length == headers.Length)
                     {
-                        dr[i] = rows[i];
+                        DataRow dr = dt.NewRow();
+                        for (int i = 0; i < headers.Length; i++)
+                        {
+                            dr[i] = rows[i];
+                        }
+                        dt.Rows.Add(dr);
                     }
-                    dt.Rows.Add(dr);
                 }
             }
+
             return dt;
         }
     }

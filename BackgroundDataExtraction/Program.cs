@@ -5,6 +5,7 @@ using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Threading;
 
 namespace BackgroundDataExtraction
 {
@@ -14,16 +15,19 @@ namespace BackgroundDataExtraction
         static void Main(string[] args)
         {
             //  BhavCsvNSE();
-            var selectedDate =DownloadAndExtract.GetDatesBetween(DateTime.Now.AddDays(-360), DateTime.Now);
+            var selectedDate = DownloadAndExtract.GetDatesBetween(DateTime.Now.AddDays(-200), DateTime.Now);
             foreach (var date in selectedDate)
             {
                 try
                 {
                     if (!(date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday))
                     {
+                        ExtractArchiveZip(date);
+                        DownloadAndExtract.DeleteExistingFiles(CommonConfiguration.UnZipFileStorageLocation);
+                        DownloadAndExtract.DeleteExistingFiles(CommonConfiguration.ZipFileStorageLocation);
                         BhavCsvNSE(date);
+                        Thread.Sleep(5000);
                     }
-                    //BhavCsvNSE(date);
                 }
                 catch (Exception ex)
                 {
@@ -31,13 +35,14 @@ namespace BackgroundDataExtraction
                     continue;
                 }
             }
+            //BhavCsvNSE(DateTime.Now);
         }
 
         private static void BhavCsvNSE(DateTime selectedDate)
         {
             string year = selectedDate.Year.ToString();
             string month = selectedDate.ToString("MMM").ToUpper();
-            string date = selectedDate.Date.Day.ToString();
+            string date = selectedDate.ToString("dd");
             //string date = "20";
             string fileName = "cm" + date + month.Substring(0, 3) + year + "bhav.csv.zip";
             string url = CommonConfiguration.UnZipBhavCSV +
@@ -48,7 +53,7 @@ namespace BackgroundDataExtraction
             DownloadAndExtract.DownloadBhavZipFile(CommonConfiguration.UnZipFileStorageLocation,
                                                    url, fileName);
 
-            DownloadAndExtract.ExtractBhavZipFile(CommonConfiguration.UnZipFileStorageLocation, 
+            DownloadAndExtract.ExtractBhavZipFile(CommonConfiguration.UnZipFileStorageLocation,
                                                   CommonConfiguration.ZipFileStorageLocation,
                                                   fileName);
             var files = GetAllFiles(CommonConfiguration.ZipFileStorageLocation);
@@ -56,23 +61,24 @@ namespace BackgroundDataExtraction
             {
                 var fileReader = CSVReader.ConvertCSVtoDataTable(file);
                 BhavService bhavService = new BhavService();
-                bhavService.SaveBhavExcelData(fileReader,selectedDate);
+                bhavService.SaveBhavExcelData(fileReader, selectedDate);
             }
         }
 
-        private static void ExtractArchiveZip()
+        private static void ExtractArchiveZip(DateTime selectedDate)
         {
-            DownloadAndExtract.DownloadZipFile();
-            DownloadAndExtract.ExtractZipFile();
+            DownloadAndExtract.DownloadZipFile(selectedDate);
+            DownloadAndExtract.ExtractZipFile(selectedDate);
             var files = GetAllFiles(CommonConfiguration.UnZipFileStorageLocation);
             foreach (var file in files)
             {
                 var fileReader = CSVReader.ConvertCSVtoDataTable(file);
                 var tableName = IdentifyTableName.TableName(Path.GetFileName(file).Substring(0, 2));
                 BhavService bhavService = new BhavService();
-                bhavService.SaveDataTableToDataBase(tableName, fileReader);
+                bhavService.SaveDataTableToDataBase(tableName, fileReader, selectedDate);
 
             }
+          
         }
 
         private static IEnumerable<string> GetAllFiles(string UnZipFileStorageLocation)

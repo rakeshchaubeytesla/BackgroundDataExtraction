@@ -9,7 +9,7 @@ namespace BackgroundDataExtraction
 {
     public interface IBhavData
     {
-        void SaveBcCorporateActionSecurities(DataTable dataTable);
+        void SaveBcCorporateActionSecurities(DataTable dataTable, DateTime selectedDate);
         void SaveBhavExcelData(DataTable dataTable, DateTime selectedDate);
     }
 }

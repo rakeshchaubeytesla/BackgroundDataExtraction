@@ -12,29 +12,33 @@ namespace BackgroundDataExtraction
 {
     public static class DownloadAndExtract
     {
-        private static readonly string dateFormat = DateTime.Now.Date.ToString("dd/MM/yy");
-        private static readonly string zipFileName = ("PR" + dateFormat + ".zip").Replace("/", "");
-        private static string zipFileUrl = CommonConfiguration.ZipFileUrl + zipFileName;
-        public static void DownloadZipFile()
+        //private static readonly string dateFormat = DateTime.Now.Date.ToString("dd/MM/yy");
+        //private static readonly string zipFileName = ("PR" + dateFormat + ".zip").Replace("/", "");
+        //private static string zipFileUrl = CommonConfiguration.ZipFileUrl + zipFileName;
+        public static void DownloadZipFile(DateTime selectedDate)
         {
             DeleteExistingFiles(CommonConfiguration.ZipFileStorageLocation);
-
+            string dateFormat = selectedDate.Date.ToString("dd/MM/yy");
+            string zipFileName = ("PR" + dateFormat + ".zip").Replace("/", "");
+            string zipFileUrl = CommonConfiguration.ZipFileUrl + zipFileName;
             using (WebClient wc = new WebClient())
             {
-                zipFileUrl = "https://archives.nseindia.com/archives/equities/bhavcopy/pr/PR190822.zip";
+                //zipFileUrl = "https://archives.nseindia.com/archives/equities/bhavcopy/pr/PR190822.zip";
                 wc.DownloadFile(zipFileUrl, CommonConfiguration.ZipFileStorageLocation + zipFileName);
             }
         }
 
-        public static void ExtractZipFile()
+        public static void ExtractZipFile(DateTime selectedDate)
         {
             DeleteExistingFiles(CommonConfiguration.UnZipFileStorageLocation);
-
+            string dateFormat = selectedDate.Date.ToString("dd/MM/yy");
+            string zipFileName = ("PR" + dateFormat + ".zip").Replace("/", "");
             ZipFile.ExtractToDirectory(CommonConfiguration.ZipFileStorageLocation + zipFileName,
                                        CommonConfiguration.UnZipFileStorageLocation);
+            
         }
 
-        private static void DeleteExistingFiles(string folderPath)
+        public static void DeleteExistingFiles(string folderPath)
         {
             System.IO.DirectoryInfo di = new DirectoryInfo(folderPath);
             foreach (FileInfo file in di.EnumerateFiles())
@@ -57,6 +61,7 @@ namespace BackgroundDataExtraction
 
             ZipFile.ExtractToDirectory(sourcePath + zipFileName,
                                        destinationPath);
+            DeleteExistingFiles(sourcePath);
         }
 
         public static DateTime[] GetDatesBetween(DateTime startDate, DateTime endDate)

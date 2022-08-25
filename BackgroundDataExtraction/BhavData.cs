@@ -18,12 +18,12 @@ namespace BackgroundDataExtraction
             _context = new FirstMarketContext();
         }
 
-        public void SaveBcCorporateActionSecurities(DataTable dataTable)
+        public void SaveBcCorporateActionSecurities(DataTable dataTable, DateTime selectedDate)
         {
             foreach (DataRow row in dataTable.Rows)
             {
                 BcCorporateActionSecurity bcCorporateActionSecurity = new BcCorporateActionSecurity();
-                bcCorporateActionSecurity.CorporateActionSecurityDate = DateTime.Now;
+                bcCorporateActionSecurity.CorporateActionSecurityDate = selectedDate;
                 bcCorporateActionSecurity.Series = row["Series"].ToString();
                 bcCorporateActionSecurity.Symbol = row["Symbol"].ToString();
                 bcCorporateActionSecurity.Security = row["Security"].ToString();

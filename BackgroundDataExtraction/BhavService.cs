@@ -21,7 +21,7 @@ namespace BackgroundDataExtraction
             var datafromCSV = CSVReader.ConvertCSVtoDataTable(strFilePath);
         }
 
-        public void SaveDataTableToDataBase(TableNameEnum tableName,DataTable dataTable)
+        public void SaveDataTableToDataBase(TableNameEnum tableName,DataTable dataTable,DateTime selectedDate)
         {
             switch (tableName)
             {
@@ -29,7 +29,7 @@ namespace BackgroundDataExtraction
 
                     break;
                 case TableNameEnum.BcCorporateActionSecurities:
-                    bhavData.SaveBcCorporateActionSecurities(dataTable);
+                    bhavData.SaveBcCorporateActionSecurities(dataTable, selectedDate);
                     break;
                 default:
                     break;
