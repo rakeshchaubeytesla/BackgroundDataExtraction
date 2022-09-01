@@ -14,7 +14,18 @@ namespace BackgroundDataExtraction
 
         static void Main(string[] args)
         {
-            //  BhavCsvNSE();
+            DeserializeBhavToDayWiseTable();
+        }
+
+        private static void DeserializeBhavToDayWiseTable()
+        {
+            BhavService bhavService = new BhavService();
+            bhavService.ExtractBhavToDerivedTable();
+
+        }
+
+        private static void getAllBhavInDateRange()
+        {
             var selectedDate = DownloadAndExtract.GetDatesBetween(DateTime.Now.AddDays(-200), DateTime.Now);
             foreach (var date in selectedDate)
             {
@@ -35,7 +46,6 @@ namespace BackgroundDataExtraction
                     continue;
                 }
             }
-            //BhavCsvNSE(DateTime.Now);
         }
 
         private static void BhavCsvNSE(DateTime selectedDate)

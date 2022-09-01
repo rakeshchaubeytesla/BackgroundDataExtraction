@@ -11,5 +11,6 @@ namespace BackgroundDataExtraction
     {
         void SaveBcCorporateActionSecurities(DataTable dataTable, DateTime selectedDate);
         void SaveBhavExcelData(DataTable dataTable, DateTime selectedDate);
+        void ExtractBhavToDerivedTable();
     }
 }

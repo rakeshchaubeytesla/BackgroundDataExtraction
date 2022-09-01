@@ -40,5 +40,10 @@ namespace BackgroundDataExtraction
         {
             bhavData.SaveBhavExcelData(dataTable,selectedDate);
         }
+
+        public void ExtractBhavToDerivedTable()
+        {
+            bhavData.ExtractBhavToDerivedTable();
+        }
     }
 }
